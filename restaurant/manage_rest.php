@@ -9,6 +9,8 @@
 </head>
 
 <body>
+<?php print_r($_SESSION); ?>
+
     <?php
     include('../connect.php');
     $mem_id = $_SESSION['mem_id'];

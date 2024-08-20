@@ -28,7 +28,7 @@
                     <a class="nav-link" href="manage_coupon.php">Coupon</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="order.php">Order</a>
+                    <a class="nav-link" href="manage_order.php">Order</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Bill</a>

@@ -9,44 +9,53 @@
 </head>
 
 <body>
-    <div class="container shadow p-5 mb-5 bg-body rounded">
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content">
+<div class="container-fluid content"> <!-- Added container class -->
+<div class="card shadow p-5 mb-5 bg-body rounded">
 
-            <?php 
-            include('../connect.php');        
-            $sql ="SELECT * FROM restaurant WHERE res_name !='' ";
-            $query = mysqli_query($conn,$sql);
-            if(mysqli_num_rows($query)>0){
-                while($result = mysqli_fetch_array($query)){
-        ?>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <img src="../asset/uploads/<?php echo $result['res_img']; ?>" class="img-fluid"
-                        style="width: 100%; height: 100%; object-fit: cover;">
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <form action="menu.php" method="POST">
-                                <input type="hidden" name="res_id" value="<?php echo $result['res_id']; ?>">
-                                <h5 class="fw-bolder"><?php echo $result['res_name']; ?></h5>
-                                <hr>
-                                Address : <?php echo $result['res_address']; ?><br>
-                                Phone : <?php echo $result['res_phone']; ?><br>
-                                <hr>
-                                Days : <?php echo $result['o_day']; ?> <br>
-                                Open : <?php echo $result['o_hr']; ?> <br>
-                                Close : <?php echo $result['c_hr']; ?> <br>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card border-0"> <!-- Removed border with border-0 class -->
+                    <img src="../asset/uploads/green-salad.JPG" class="card-img-top rounded"  style="width: 300px; height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">Classic Caesar Salad &nbsp;&nbsp;&nbsp;</h5>
+                        <div class="d-flex align-items-center">
+                            <span class="text-muted">• Deep Cafe • Salad</span> <!--  Alt  + 0149 -->
                         </div>
                     </div>
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent text-center">
-                        <div><button class="btn btn-outline-primary" type="submit" name="menu">View Menu</button></div>
-                    </div>
-                    </form>
                 </div>
             </div>
-            <?php 
-            }
-        } 
-        ?>
+        </div>
+    </div>
+
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card border-0">
+                <img src="../asset/uploads/green-salad.JPG" class="card-img-top rounded"  style="width: 300px; height: 200px; object-fit: cover;">
+                <div class="card-body">
+                        <h5 class="card-title "> Classic Caesar Salad  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b class="text-success mb-0">฿190</b> </h5>
+                        <p class="text-muted">• Deep Cafe • Salad <button type="submit" class="btn btn-primary btn-sm"> + </button></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card border-0">
+                <img src="../asset/uploads/green-salad.JPG" class="card-img-top rounded"  style="width: 300px; height: 200px; object-fit: cover;">
+                <div class="card-body">
+                        <h5 class="card-title "> Classic Caesar Salad  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b class="text-success mb-0">฿190</b> </h5>
+                        <p class="text-muted">• Deep Cafe • Salad </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
         </div>
     </div>

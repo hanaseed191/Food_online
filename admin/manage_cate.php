@@ -12,7 +12,6 @@
 <div class="container-fluid content"> <!-- Added container class -->
         <div class="card shadow p-5 mb-5 bg-body rounded">
             <?php
-            session_start();
             if (isset($_SESSION['status'])) {
                 $_SESSION['status'] === 'success';
                 echo '<div class="alert alert-primary" align="left" role="alert"><b>Manage Data Category Successful. !!</b></div>';

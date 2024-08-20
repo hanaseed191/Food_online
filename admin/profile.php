@@ -84,6 +84,7 @@
                     <label for="file">Picture Profile</label>
                     <input type="file" name="file" id="file" class="form-control" />
                 </div>
+                <input type="hidden" name="redirect" value="admin">
 
                 <button type="submit" name="submit" value="Upload" class="btn btn-success form-control my-2">
                     Save 

@@ -9,8 +9,8 @@
 </head>
 
 <body>
-    <div class="content">
-        <div class="container shadow p-5 mb-5 bg-body rounded">
+<div class="container-fluid content"> <!-- Added container class -->
+<div class="card shadow p-5 mb-5 bg-body rounded">
             <h1 align="center" class="p-1">Order</h1>
             <table class="table">
                 <thead align="center">
