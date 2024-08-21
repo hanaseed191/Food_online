@@ -19,7 +19,7 @@
                     <a class="nav-link" href="restaurant.php">Restaurant</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="category.php">Category</a>
+                    <a class="nav-link" href="cart.php">Cart</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="order.php">Order</a>
