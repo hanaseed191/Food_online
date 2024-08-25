@@ -9,7 +9,6 @@
 </head>
 
 <body>
-<?php print_r($_SESSION); ?>
 
     <?php
     include('../connect.php');

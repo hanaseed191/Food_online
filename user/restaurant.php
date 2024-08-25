@@ -117,7 +117,7 @@ $query = mysqli_query($conn, $sql);
                                         <div class="order-qty-container mt-3">
                                             <input type="hidden" name="mem_id" value="<?php echo $_SESSION['mem_id']; ?>">
                                             <input type="hidden" name="menu_id" value="<?php echo $result['menu_id']; ?>">
-                                            <input type="hidden" name="res_id" value="<?php echo $result['res_id']; ?>">
+                                            <input type="hidden" name="res_id" value="<?php echo $_SESSION["res_id"] = $result['res_id']; ?>">
                                             <input type="hidden" name="menu_name" value="<?php echo $result['menu_name']; ?>">
                                             <input type="hidden" name="menu_price" value="<?php echo $result['menu_price']; ?>">
                                             <input type="number" name="order_qty" class="order-qty" value="1" min="1">

@@ -4,7 +4,7 @@ include('../connect.php');
 // Fetch data from the 'sum' table
 session_start();
 $mem_id = $_SESSION['mem_id'];
-$sql = "SELECT `sum_id`, `mem_id`, `menu_id`, `res_id`, `menu_name`, `menu_price`, `order_qty` FROM `sum` WHERE `mem_id` = '$mem_id'";
+$sql = "SELECT `sum_id`, `mem_id`, `menu_id`, `res_id`, `menu_name`, `menu_price`, `order_qty` FROM `sum` WHERE `mem_id` = '2' AND order_group IS NULL";
 $query = mysqli_query($conn, $sql);
 
 $total = 0; // Initialize total price
@@ -27,78 +27,145 @@ $total = 0; // Initialize total price
             <div class="row">
                 <!-- ตะกร้าสินค้าด้านซ้าย -->
                 <div class="col-1"></div>
-                <div class="col-6">
-                    <h2 class="text-center">ตะกร้าสินค้า</h2>
-                    <form action="order.php" method="POST">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>ลำดับ</th>
-                                    <th>สินค้า</th>
-                                    <th>ราคา</th>
-                                    <th>จำนวน</th>
-                                    <th>รวม(บาท)</th>
-                                    <th>ลบ</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $count = 1;
-                                while ($result = mysqli_fetch_array($query)) {
-                                    $item_total = $result['menu_price'] * $result['order_qty'];
-                                    $total += $item_total;
-                                    ?>
+                <div class="col-md-8 col-sm-12">
+                    <h2 class="text-center">My Cart</h2>
+                    <form action="config_cart.php" method="POST">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
                                     <tr>
-                                        <form action="config_cart.php" method="post">
-                                            <input type="hidden" name="sum_id" value="<?php echo $result['sum_id']; ?>">
-                                        <td><?php echo $count++; ?></td>
-                                        <td><?php echo $result['menu_name']; ?></td>
-                                        <td><?php echo '฿' . number_format($result['menu_price'], 2); ?></td>
-                                        <td> <?php echo $result['order_qty']; ?></td>
-                                        <td><?php echo '฿' . number_format($item_total, 2); ?></td>
-                                        <td><button type="submit" name ="delete" class="btn btn-danger">ลบ</button></td>
-                                        </form>
+                                        <th>Item</th>
+                                        <th>Product</th>
+                                        <th>Price</th>
+                                        <th>QTY.</th>
+                                        <th>Total(฿)</th>
+                                        <th>Action</th>
                                     </tr>
+                                </thead>
+                                <tbody>
                                     <?php
-                                }
-                                ?>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="4" class="text-center"><b>ราคารวม</b></td>
-                                    <td class="text-right"><b><?php echo '฿' . number_format($total, 2); ?></b></td>
-                                    <td></td>
-                                </tr>
-                            </tfoot>
-                        </table>
+                                    $count = 1;
+                                    $total_qty = 0;
+                                    $discount = isset($_SESSION["coupon_discount"]) ? $_SESSION["coupon_discount"] / 100 : 0;
+
+                                    while ($result = mysqli_fetch_array($query)) {
+                                        $item_total = $result['menu_price'] * $result['order_qty'];
+                                        $discounted_total = $item_total - ($item_total * $discount); // คำนวณราคาหลังจากหักส่วนลด
+                                        $total += $item_total;
+                                        $total_qty += $result['order_qty'];
+                                        ?>
+                                        <tr>
+                                            <input type="hidden" name="menu_id" value="<?php echo $result['menu_id']; ?>">
+                                            <input type="hidden" name="menu_name"
+                                                value="<?php echo $result['menu_name']; ?>">
+                                            <input type="hidden" name="order_price"
+                                                value="<?php echo $discounted_total; ?>"> <!-- ส่งราคาหลังจากหักส่วนลด -->
+                                            <input type="hidden" name="order_qty"
+                                                value="<?php echo $result['order_qty']; ?>">
+                                            <td><?php echo $count++; ?></td>
+                                            <td><?php echo $result['menu_name']; ?></td>
+                                            <td><?php echo '฿' . number_format($result['menu_price'], 2); ?></td>
+                                            <td><?php echo $result['order_qty']; ?></td>
+                                            <td><?php echo '฿' . number_format($discounted_total, 2); ?></td>
+                                            <!-- แสดงราคาหลังจากหักส่วนลด -->
+                                            <td>
+                                                <a href="config_cart.php?delete=<?php echo $result['sum_id']; ?>"
+                                                    class="btn btn-danger">Delete</a>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" class="text-center"><b>Total</b></td>
+                                        <td class="text-right"><b><?php echo number_format($total_qty); ?></b></td>
+                                        <td class="text-right"><b><?php echo '฿' . number_format($total, 2); ?></b></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="text-right"><b>Discount : </b></td>
+                                        <td class="text-right">
+                                            <b><?php echo '-฿' . number_format($total * $discount, 2); ?></b></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="text-right"><b>Grand Total:</b></td>
+                                        <td class="text-right">
+                                            <b><?php echo '฿' . number_format($sum = $total - ($total * $discount), 2); ?></b>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <!-- ส่งค่า Grand Total ใน hidden input -->
+                                    <input type="hidden" name="order_price" value="<?php echo $sum; ?>">
+                                </tfoot>
+                            </table>
+                        </div>
                         <div class="d-flex justify-content-between">
-                            <a href="restaurant.php" class="btn btn-primary">กลับหน้ารายการสินค้า</a>
+                            <a href="restaurant.php" class="btn btn-primary">Back</a>
                         </div>
-                    </form>
+                        <br>
+                        <?php
+                        session_start();
+                        if (isset($_SESSION['status'])) {
+                            if ($_SESSION['status'] === 'add') {
+                                echo '<div class="alert alert-primary" align="left" role="alert"><b>Add Products Successful. !!</b></div>';
+                            } else if ($_SESSION['status'] === 'delete') {
+                                echo '<div class="alert alert-primary" align="left" role="alert"><b>Delete Products Successful. !!</b></div>';
+                            } else if ($_SESSION['status'] === 'error') {
+                                echo '<div class="alert alert-danger" align="left" role="alert"><b>Can\'t Add Products  !!</b></div>';
+                            }
+                            unset($_SESSION['status']);
+                            unset($_SESSION['coupon_discount']);
+                        }
+                        ?>
                 </div>
+
                 <!-- ข้อมูลการจัดส่งด้านขวา -->
-                <div class="col-1"></div>
-                <div class="col-3">
-                    <h3 class="text-center">ข้อมูลการจัดส่ง</h3>
-                    <form action="order.php" method="POST">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">ชื่อผู้รับ</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="address" class="form-label">ที่อยู่</label>
-                            <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">เบอร์โทรศัพท์</label>
-                            <input type="text" class="form-control" id="phone" name="phone" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="notes" class="form-label">หมายเหตุ</label>
-                            <textarea class="form-control" id="notes" name="notes" rows="2"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-success w-100">ยืนยันการสั่งซื้อ</button>
+                <div class="col-md-3 col-sm-12">
+                    <h3 class="text-center">Address for Delivery</h3>
+                    <div class="mb-3">
+                        <label for="mem_name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="mem_name" name="mem_name" value="<?php echo $_SESSION['mem_name'];
+                        echo "  ";
+                        echo $_SESSION['mem_last']; ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea class="form-control" id="mem_address" name="mem_address" rows="3"
+                            required><?php echo $_SESSION['mem_address']; ?></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="mem_phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" id="mem_phone" name="mem_phone"
+                            value="<?php echo $_SESSION['mem_phone']; ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="mem_note" class="form-label">Notes</label>
+                        <textarea class="form-control" id="mem_note" name="mem_note" rows="2"></textarea>
+                    </div>
+                    <button type="submit" name="confirm" class="btn btn-success w-100">Confrim Order</button>
                     </form>
+                    <br><br>
+                    <h3 class="text-center">Coupon</h3>
+                    <form action="config_cart.php" method="post">
+                        <input type="text" class="form-control" name="use_coupon" placeholder="Coupon">
+                        <br>
+                        <button type="submit" name="coupon" class="btn btn-secondary w-100">Use Coupon</button>
+                    </form>
+                    <br>
+                    <?php
+                        session_start();
+                        if (isset($_SESSION['status_coupon'])) {
+                            if ($_SESSION['status_coupon'] === 'coupon') {
+                                echo '<div class="alert alert-primary" align="left" role="alert"><b>Used Coupon Successful. !!</b></div>';
+                            } else if ($_SESSION['status_coupon'] === 'nocoupon') {
+                                echo '<div class="alert alert-danger" align="left" role="alert"><b>Coupon Not Found !!</b></div>';
+                            } 
+                            unset($_SESSION['status_coupon']);
+                        }
+                       ?>
                 </div>
             </div>
 

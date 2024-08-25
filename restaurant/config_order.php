@@ -6,11 +6,10 @@ if (isset($_POST["cancle"])) {
     $order_status = $_POST['order_status'];
     $sql = "UPDATE orders SET order_status = 'cancle' WHERE order_id = '$order_id' ";
     $query = mysqli_query($conn, $sql);
-    if ($query) {
-        $_SESSION["status"] = 'success';
-        header('Location: manage_order.php');
-        exit();
-    }
+        if ($query) {
+            $_SESSION["status"] = 'cancle';
+            header('Location: manage_order.php');
+            exit();
+        }
 }
-
 ?>

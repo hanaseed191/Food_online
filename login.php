@@ -13,6 +13,8 @@
         $_SESSION["mem_pass"] = $result['mem_pass'];
         $_SESSION["mem_name"] = $result['mem_name'];
         $_SESSION["mem_last"] = $result['mem_last'];
+        $_SESSION["mem_phone"] = $result['mem_phone'];
+        $_SESSION["mem_address"] = $result['mem_address'];
         $_SESSION["mem_status"] = $result['mem_status'];
         $_SESSION["mem_check"] = $result['mem_check'];
 

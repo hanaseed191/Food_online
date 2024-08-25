@@ -39,7 +39,7 @@
                     <a class="nav-link active"><?php echo strtoupper($_SESSION["mem_last"]); ?></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="logout.php">Logout&nbsp;&nbsp;</a>
+                    <a class="nav-link" href="../logout.php">Logout&nbsp;&nbsp;</a>
                 </li>
             </ul>
         </div>

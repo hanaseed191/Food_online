@@ -14,9 +14,8 @@
             <h1 align="center" class="p-1">Order</h1>
             <table class="table">
                 <thead align="center">
-                    <th>#</th>
+                    <th>No.</th>
                     <th>Restaurant</th>
-                    <th>Item</th>
                     <th>QTY</th>
                     <th>Price</th>
                     <th>Status</th>
@@ -31,7 +30,7 @@
                 ?>
                 
                 <?php
-                    $sql ="SELECT * FROM orders WHERE order_status = 'in_process' and mem_status IS NULL GROUP BY order_group  ";
+                    $sql ="SELECT * FROM orders WHERE order_status = 'in_process' and mem_status IS NULL";
                     $query = mysqli_query($conn,$sql);
                     while($result = mysqli_fetch_array($query)){
                 ?>
@@ -41,11 +40,10 @@
                         <input type="hidden" name="order_id" class="form-control"
                             value="<?php echo $result['order_id']; ?>">
                         <td><input type="hidden" name="order_id" disabled class="form-control"
-                                value="<?php echo $result['order_id']; ?>"><?php echo $result['order_id']; ?></td>
+                                value="<?php echo $result['order_id']; ?>">Order #<?php echo $result['order_id']; ?></td>
                         <td><input type="hidden" name="res_name" disabled class="form-control"
                                 value="<?php echo $result1['res_name']; ?>"><?php echo $result1['res_name']; ?></td>
-                        <td><input type="hidden" name="menu_name" class="form-control"
-                                value="<?php echo $result['menu_name']; ?>"><?php echo $result['menu_name']; ?></td>
+                        
                         <td><input type="hidden" name="order_qty" class="form-control"
                                 value="<?php echo $result['order_qty']; ?>"><?php echo $result['order_qty']; ?></td>
                         <td><input type="hidden" name="order_price" class="form-control"
